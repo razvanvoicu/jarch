@@ -6,7 +6,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
-	"regexp"
+	. "regexp"
 	"strings"
 )
 
@@ -59,7 +59,7 @@ func detectorWalker(pattern string, path_holder *list.List) filepath.WalkFunc {
 		if info.IsDir() {
 			return nil
 		}
-		r, _ := regexp.MatchString(pattern, path)
+		r, _ := MatchString(pattern, path)
 		if r {
 			path_holder.PushBack(path)
 		}
@@ -99,7 +99,10 @@ func dstName(src string) string {
 		dir = "/mnt/odin/data/journal/"
 	}
 	info, _ := os.Stat(src)
-	ts := info.ModTime().UTC()
+	ts := info.ModTime()
+	if match, _ := MatchString("MEDIA/DJI_", src); !match {
+		ts = ts.UTC()
+	}
 	year := ts.Format("2006")
 	month := ts.Format("01")
 	day := ts.Format("02")
