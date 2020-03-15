@@ -56,7 +56,7 @@ func searchFiles(dir string, pattern string, paths *list.List, walker func(strin
 
 func detectorWalker(pattern string, path_holder *list.List) filepath.WalkFunc {
 	return func(path string, info os.FileInfo, err error) error {
-		if info.IsDir() {
+		if info != nil && info.IsDir() {
 			return nil
 		}
 		r, _ := MatchString(pattern, path)
